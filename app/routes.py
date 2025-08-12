@@ -95,3 +95,43 @@ def get_link(short_id):
     abort(404)
   else:
     return redirect(link.original_url)
+
+@bp.route("/link/<int:link_id>", methods=['DELETE'])
+def delete_link(link_id):
+  """
+  Deleta um link encurtado
+  ---
+  tags:
+    - Links
+  parameters:
+    - in: path
+      name: link_id
+      required: true
+      type: integer
+      description: ID do link a ser deletado
+  responses:
+    200:
+      description: Link deletado com sucesso
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+    404:
+      description: Link não encontrado
+      schema:
+        type: object
+        properties:
+          message:
+            type: string
+  """
+  
+  link = Link.query.get(link_id)
+  
+  if not link:
+    return jsonify({"message": "Link not found"}), 404
+  
+  db.session.delete(link)
+  db.session.commit()
+  
+  return jsonify({"message": "Link deleted successfully"}), 200
