@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, app
 from flask_cors import CORS
 from flasgger import Swagger
 from app.models import db
@@ -7,7 +7,9 @@ from app.routes import bp
 
 def create_app():
   app = Flask(__name__)
-  CORS(app)
+  
+  # Habilita CORS para todos os métodos e origens (dev)
+  CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
   swagger_template = {
     "info": {
