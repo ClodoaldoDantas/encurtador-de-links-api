@@ -1,11 +1,13 @@
 import os
 from flask import Flask
+from flask_cors import CORS
 from flasgger import Swagger
 from app.models import db
 from app.routes import bp
 
 def create_app():
   app = Flask(__name__)
+  CORS(app)
 
   swagger_template = {
     "info": {
